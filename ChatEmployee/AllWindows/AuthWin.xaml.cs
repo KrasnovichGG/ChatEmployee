@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,21 @@ namespace ChatEmployee
         public AuthWin()
         {
             InitializeComponent();
+            CheckConfigFile();
+            FillFromConfigFile();
+            //TbUserName.Text = App.ConfigFilePath;
             //string pass = "Sasha";
             //var decodeStr = Decoding(pass); 
             //MessageBox.Show("зашифрованный пароль " + decodeStr);
             //MessageBox.Show("расшифрованный пароль " + EncodingStr(decodeStr));
+        }
+
+        private void CheckConfigFile()
+        {
+            if(!File.Exists(App.ConfigFilePath))
+            {
+                File.Create(App.ConfigFilePath);
+            }
         }
 
         private void BtnCloseAPP_Click(object sender, RoutedEventArgs e)
@@ -37,6 +49,41 @@ namespace ChatEmployee
                 Close();
             }
             
+        }
+
+        private void BtnLog_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)ChekSoxrUser.IsChecked)
+            {
+                using (StreamWriter sw = new StreamWriter(App.ConfigFilePath))
+                {
+                    sw.WriteLine($"Login: {TbUserName.Text}");
+                    sw.WriteLine($"Password: {PbPassUser.Password}");
+                }
+                return;
+            }
+        }
+
+        private void FillFromConfigFile()
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(App.ConfigFilePath))
+                {
+                    var str = sr.ReadLine();
+                    if (String.IsNullOrEmpty(str))
+                        return;
+
+                    TbUserName.Text = str.Replace("Login: ", "");
+                    PbPassUser.Password = sr.ReadLine().Replace("Password: ", "");
+                }
+
+                ChekSoxrUser.IsChecked = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         //public string Decoding(string s)
         //{

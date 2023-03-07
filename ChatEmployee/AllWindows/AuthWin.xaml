@@ -78,7 +78,7 @@
             BorderBrush="Black"
             BorderThickness="2,2,2,2"
             Content="Ok"
-            FontFamily="Comic Sans MS" />
+            FontFamily="Comic Sans MS" Click="BtnLog_Click" />
         <Button
             x:Name="BtnCloseAPP"
             Grid.Row="1"
