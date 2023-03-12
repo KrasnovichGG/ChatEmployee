@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatEmployee.DB;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -14,6 +15,12 @@ namespace ChatEmployee
     /// </summary>
     public partial class App : Application
     {
+        
         public static readonly string ConfigFilePath = Path.GetTempPath() + "config.ini";
+        public static DBChatEntities dBChatEntities = new DBChatEntities();
+        public static Employee emp;
+        public static Department dep;
+        public static ChatRoom chatR;
+        public static ChatMessage chatM;
     }
 }

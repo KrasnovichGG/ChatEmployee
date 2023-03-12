@@ -68,10 +68,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AllWindows\UserFinder.xaml.cs">
+      <DependentUpon>UserFinder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AllWindows\UserWin.xaml.cs">
+      <DependentUpon>UserWin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AllWindows\WinChat.xaml.cs">
+      <DependentUpon>WinChat.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Chat.cs" />
     <Compile Include="DB\ChatMessage.cs">
       <DependentUpon>ModelChat.tt</DependentUpon>
     </Compile>
@@ -109,6 +119,18 @@
       <DependentUpon>AuthWin.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="AllWindows\UserFinder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AllWindows\UserWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AllWindows\WinChat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

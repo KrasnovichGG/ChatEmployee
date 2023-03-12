@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatEmployee.AllWindows;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,17 +52,53 @@ namespace ChatEmployee
             
         }
 
-        private void BtnLog_Click(object sender, RoutedEventArgs e)
+        private async void BtnLog_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)ChekSoxrUser.IsChecked)
+
+            if(TbUserName.Text == "" || PbPassUser.Password == "")
             {
-                using (StreamWriter sw = new StreamWriter(App.ConfigFilePath))
-                {
-                    sw.WriteLine($"Login: {TbUserName.Text}");
-                    sw.WriteLine($"Password: {PbPassUser.Password}");
-                }
+                MessageBox.Show("Не оставляйте поля незаполненными!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            if ((bool)ChekSoxrUser.IsChecked)
+            {
+               await WriteToconfigFile($"Login: {TbUserName.Text}");   
+               await WriteToconfigFile($"Password: {PbPassUser.Password}");   
+            }
+            
+            var employee = App.dBChatEntities.Employee.FirstOrDefault(x => x.Username == TbUserName.Text && x.Password == PbPassUser.Password);
+            if (employee == null)
+            {
+                MessageBox.Show("Такого пользователя не существует", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else
+            {
+                switch (employee.Department_Id)
+                {
+                    case 1:
+                        MessageBox.Show($"Добрый день, {employee.Name}, {employee.Department.Name}", "Добро пожаловать!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        break;
+                    case 2:
+                        MessageBox.Show($"Добрый день, {employee.Name}, {employee.Department.Name}", "Добро пожаловать!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        break;
+                    case 3:
+                        MessageBox.Show($"Добрый день, {employee.Name}, {employee.Department.Name}", "Добро пожаловать!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        break;
+                    case 4:
+                        MessageBox.Show($"Добрый день, {employee.Name}, {employee.Department.Name}", "Добро пожаловать!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        break;
+                    case 5:
+                        MessageBox.Show($"Добрый день, {employee.Name}, {employee.Department.Name}", "Добро пожаловать!", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        break;
+                }
+
+                App.emp=employee;
+                UserWin userWin = new UserWin();
+                userWin.Show();
+                Close();
+            }
+
         }
 
         private void FillFromConfigFile()
@@ -76,6 +113,7 @@ namespace ChatEmployee
 
                     TbUserName.Text = str.Replace("Login: ", "");
                     PbPassUser.Password = sr.ReadLine().Replace("Password: ", "");
+                    sr.Close();
                 }
 
                 ChekSoxrUser.IsChecked = true;
@@ -85,6 +123,28 @@ namespace ChatEmployee
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private async void ChekSoxrUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChekSoxrUser.IsChecked == false)
+            {
+                TbUserName.Clear();
+                PbPassUser.Clear();
+                await WriteToconfigFile("");
+            }
+        }
+
+        private async Task WriteToconfigFile(string str)
+        {
+            using (StreamWriter sw = new StreamWriter(App.ConfigFilePath))
+            {
+                await sw.WriteLineAsync(str);
+                sw.Close();
+            }
+        }
+
+
+
         //public string Decoding(string s)
         //{
         //    return Convert.ToBase64String(Encoding.UTF8.GetBytes(s));
